@@ -1,0 +1,822 @@
+=============== 2025-09-06 12:25:03 ===============
+# How many total BOOLEAN values?
+
+Command:
+grep -c BOOLEAN f1db_working.sql
+
+Output:
+8
+===================================================
+
+=============== 2025-09-06 12:25:29 ===============
+# Each particular BOOLEAN field
+
+Command:
+grep BOOLEAN f1db_working.sql
+
+Output:
+, "test_driver" BOOLEAN NOT NULL
+, "drivers_championship_decider" BOOLEAN
+, "constructors_championship_decider" BOOLEAN
+, "race_shared_car" BOOLEAN
+, "race_pole_position" BOOLEAN
+, "race_fastest_lap" BOOLEAN
+, "race_driver_of_the_day" BOOLEAN
+, "race_grand_slam" BOOLEAN
+===================================================
+
+=============== 2025-09-06 12:25:51 ===============
+# Find all the instances where a BOOLEAN type appears
+
+Command:
+grep -B 5 -A 2 BOOLEAN f1db_working.sql
+
+Output:
+, "constructor_id" VARCHAR(100) NOT NULL
+, "engine_manufacturer_id" VARCHAR(100) NOT NULL
+, "driver_id" VARCHAR(100) NOT NULL
+, "rounds" VARCHAR(100)
+, "rounds_text" VARCHAR(100)
+, "test_driver" BOOLEAN NOT NULL
+, CONSTRAINT "sedr_pk" PRIMARY KEY ("year", "entrant_id", "constructor_id", "engine_manufacturer_id", "driver_id")
+, CONSTRAINT "sedr_year_fk" FOREIGN KEY ("year") REFERENCES "season" ("year")
+--
+, "turns" INTEGER NOT NULL
+, "laps" INTEGER NOT NULL
+, "distance" DECIMAL(6,3) NOT NULL
+, "scheduled_laps" INTEGER
+, "scheduled_distance" DECIMAL(6,3)
+, "drivers_championship_decider" BOOLEAN
+, "constructors_championship_decider" BOOLEAN
+, "pre_qualifying_date" DATE
+, "pre_qualifying_time" VARCHAR(5)
+--
+, "starting_grid_position_qualification_position_text" VARCHAR(4)
+, "starting_grid_position_grid_penalty" VARCHAR(20)
+, "starting_grid_position_grid_penalty_positions" INTEGER
+, "starting_grid_position_time" VARCHAR(20)
+, "starting_grid_position_time_millis" INTEGER
+, "race_shared_car" BOOLEAN
+, "race_laps" INTEGER
+, "race_time" VARCHAR(20)
+--
+, "race_gap_laps" INTEGER
+, "race_interval" VARCHAR(20)
+, "race_interval_millis" INTEGER
+, "race_reason_retired" VARCHAR(100)
+, "race_points" DECIMAL(8,2)
+, "race_pole_position" BOOLEAN
+, "race_qualification_position_number" INTEGER
+, "race_qualification_position_text" VARCHAR(4)
+, "race_grid_position_number" INTEGER
+, "race_grid_position_text" VARCHAR(2)
+, "race_positions_gained" INTEGER
+, "race_pit_stops" INTEGER
+, "race_fastest_lap" BOOLEAN
+, "race_driver_of_the_day" BOOLEAN
+, "race_grand_slam" BOOLEAN
+, "fastest_lap_lap" INTEGER
+, "fastest_lap_time" VARCHAR(20)
+===================================================
+
+Here we can see that there are 8 boolean values overall.
+We have fixed the first one "test_driver".
+The next two "drivers_championship_decider" & "constructors_championship_decider" are one below the other, which means, they are in the same table.
+And by looking at the rest, they could be part of the same table or maximum 2 tables.
+SO we have to fix a maximum of 3 more tables where BOOLEANS would be stored as INTEGERS (0/1).
+
+=============== 2025-09-06 12:51:53 ===============
+# Find which table drivers_championship_decider belongs to
+
+Command:
+grep -B 20 -n drivers_championship_decider f1db_working.sql
+
+Output:
+26004-INSERT INTO season_constructor_standing VALUES(2025,10,10,'10','alpine','renault',20);
+26005-CREATE TABLE IF NOT EXISTS "race"
+26006-( "id" INTEGER NOT NULL
+26007-, "year" INTEGER NOT NULL
+26008-, "round" INTEGER NOT NULL
+26009-, "date" DATE NOT NULL
+26010-, "time" VARCHAR(5)
+26011-, "grand_prix_id" VARCHAR(100) NOT NULL
+26012-, "official_name" VARCHAR(100) NOT NULL
+26013-, "qualifying_format" VARCHAR(20) NOT NULL
+26014-, "sprint_qualifying_format" VARCHAR(20)
+26015-, "circuit_id" VARCHAR(100) NOT NULL
+26016-, "circuit_type" VARCHAR(6) NOT NULL
+26017-, "direction" VARCHAR(14) NOT NULL
+26018-, "course_length" DECIMAL(6,3) NOT NULL
+26019-, "turns" INTEGER NOT NULL
+26020-, "laps" INTEGER NOT NULL
+26021-, "distance" DECIMAL(6,3) NOT NULL
+26022-, "scheduled_laps" INTEGER
+26023-, "scheduled_distance" DECIMAL(6,3)
+26024:, "drivers_championship_decider" BOOLEAN
+===================================================
+
+=============== 2025-09-06 12:56:28 ===============
+# Just to verify that constructors_championship_decider is right below and also belongs to the same table
+
+Command:
+grep -B 20 -n constructors_championship_decider f1db_working.sql
+
+Output:
+26005-CREATE TABLE IF NOT EXISTS "race"
+26006-( "id" INTEGER NOT NULL
+26007-, "year" INTEGER NOT NULL
+26008-, "round" INTEGER NOT NULL
+26009-, "date" DATE NOT NULL
+26010-, "time" VARCHAR(5)
+26011-, "grand_prix_id" VARCHAR(100) NOT NULL
+26012-, "official_name" VARCHAR(100) NOT NULL
+26013-, "qualifying_format" VARCHAR(20) NOT NULL
+26014-, "sprint_qualifying_format" VARCHAR(20)
+26015-, "circuit_id" VARCHAR(100) NOT NULL
+26016-, "circuit_type" VARCHAR(6) NOT NULL
+26017-, "direction" VARCHAR(14) NOT NULL
+26018-, "course_length" DECIMAL(6,3) NOT NULL
+26019-, "turns" INTEGER NOT NULL
+26020-, "laps" INTEGER NOT NULL
+26021-, "distance" DECIMAL(6,3) NOT NULL
+26022-, "scheduled_laps" INTEGER
+26023-, "scheduled_distance" DECIMAL(6,3)
+26024-, "drivers_championship_decider" BOOLEAN
+26025:, "constructors_championship_decider" BOOLEAN
+===================================================
+
+Confirmed that both "drivers_championship_decider" & "constructors_championship_decider",
+belong to the same table "race" as confirmed at line-26005.
+
+=============== 2025-09-06 14:10:34 ===============
+# Check the structure of the 'race' table
+
+Command:
+grep -B 20 -A 30 -n constructors_championship_decider f1db_working.sql
+
+Output:
+26005-CREATE TABLE IF NOT EXISTS "race"
+26006-( "id" INTEGER NOT NULL
+26007-, "year" INTEGER NOT NULL
+26008-, "round" INTEGER NOT NULL
+26009-, "date" DATE NOT NULL
+26010-, "time" VARCHAR(5)
+26011-, "grand_prix_id" VARCHAR(100) NOT NULL
+26012-, "official_name" VARCHAR(100) NOT NULL
+26013-, "qualifying_format" VARCHAR(20) NOT NULL
+26014-, "sprint_qualifying_format" VARCHAR(20)
+26015-, "circuit_id" VARCHAR(100) NOT NULL
+26016-, "circuit_type" VARCHAR(6) NOT NULL
+26017-, "direction" VARCHAR(14) NOT NULL
+26018-, "course_length" DECIMAL(6,3) NOT NULL
+26019-, "turns" INTEGER NOT NULL
+26020-, "laps" INTEGER NOT NULL
+26021-, "distance" DECIMAL(6,3) NOT NULL
+26022-, "scheduled_laps" INTEGER
+26023-, "scheduled_distance" DECIMAL(6,3)
+26024-, "drivers_championship_decider" BOOLEAN
+26025:, "constructors_championship_decider" BOOLEAN
+26026-, "pre_qualifying_date" DATE
+26027-, "pre_qualifying_time" VARCHAR(5)
+26028-, "free_practice_1_date" DATE
+26029-, "free_practice_1_time" VARCHAR(5)
+26030-, "free_practice_2_date" DATE
+26031-, "free_practice_2_time" VARCHAR(5)
+26032-, "free_practice_3_date" DATE
+26033-, "free_practice_3_time" VARCHAR(5)
+26034-, "free_practice_4_date" DATE
+26035-, "free_practice_4_time" VARCHAR(5)
+26036-, "qualifying_1_date" DATE
+26037-, "qualifying_1_time" VARCHAR(5)
+26038-, "qualifying_2_date" DATE
+26039-, "qualifying_2_time" VARCHAR(5)
+26040-, "qualifying_date" DATE
+26041-, "qualifying_time" VARCHAR(5)
+26042-, "sprint_qualifying_date" DATE
+26043-, "sprint_qualifying_time" VARCHAR(5)
+26044-, "sprint_race_date" DATE
+26045-, "sprint_race_time" VARCHAR(5)
+26046-, "warming_up_date" DATE
+26047-, "warming_up_time" VARCHAR(5)
+26048-, CONSTRAINT "race_pk" PRIMARY KEY ("id")
+26049-, CONSTRAINT "race_year_round_uk" UNIQUE ("year", "round")
+26050-, CONSTRAINT "race_year_fk" FOREIGN KEY ("year") REFERENCES "season" ("year")
+26051-, CONSTRAINT "race_grand_prix_id_fk" FOREIGN KEY ("grand_prix_id") REFERENCES "grand_prix" ("id")
+26052-, CONSTRAINT "race_circuit_id_fk" FOREIGN KEY ("circuit_id") REFERENCES "circuit" ("id")
+26053-);
+26054-INSERT INTO race VALUES(1,1950,1,'1950-05-13',NULL,'great-britain','1950 RAC British Grand Prix','TWO_SESSION',NULL,'silverstone','RACE','CLOCKWISE',4.649000000000000021,8,70,325.4300000000000068,NULL,NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+26055-INSERT INTO race VALUES(2,1950,2,'1950-05-21',NULL,'monaco','Grand Prix de Monaco 1950','TWO_SESSION',NULL,'monaco','STREET','CLOCKWISE',3.180000000000000159,14,100,318,NULL,NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+===================================================
+
+=============== 2025-09-06 14:40:54 ===============
+# Check INSERT statement in race table
+
+Command:
+grep "INSERT INTO race" f1db_working.sql | head -1
+
+Output:
+INSERT INTO race VALUES(1,1950,1,'1950-05-13',NULL,'great-britain','1950 RAC British Grand Prix','TWO_SESSION',NULL,'silverstone','RACE','CLOCKWISE',4.649000000000000021,8,70,325.4300000000000068,NULL,NULL,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+===================================================
+
+=============== 2025-09-06 14:44:48 ===============
+# Get the position of each field in the table
+
+Command:
+grep 'INSERT INTO race VALUES' f1db_working.sql | head -1 | tr ',' '\n' | nl
+
+Output:
+     1	INSERT INTO race VALUES(1
+     2	1950
+     3	1
+     4	'1950-05-13'
+     5	NULL
+     6	'great-britain'
+     7	'1950 RAC British Grand Prix'
+     8	'TWO_SESSION'
+     9	NULL
+    10	'silverstone'
+    11	'RACE'
+    12	'CLOCKWISE'
+    13	4.649000000000000021
+    14	8
+    15	70
+    16	325.4300000000000068
+    17	NULL
+    18	NULL
+    19	0
+    20	0
+    21	NULL
+    22	NULL
+    23	NULL
+    24	NULL
+    25	NULL
+    26	NULL
+    27	NULL
+    28	NULL
+    29	NULL
+    30	NULL
+    31	NULL
+    32	NULL
+    33	NULL
+    34	NULL
+    35	NULL
+    36	NULL
+    37	NULL
+    38	NULL
+    39	NULL
+    40	NULL
+    41	NULL
+    42	NULL);
+===================================================
+
+=============== 2025-09-06 15:00:12 ===============
+# Check how many INSERT statements are present in the race table
+
+Command:
+grep -c 'INSERT INTO race VALUES' f1db_working.sql
+
+Output:
+1149
+===================================================
+
+=============== 2025-09-06 19:43:36 ===============
+# Check boolean patterns in race table
+
+Command:
+grep 'INSERT INTO race VALUES' f1db_working.sql | sed 's/INSERT INTO race VALUES(\([^,]*,\)\{18\}\([01]\),\([01]\),.*/\2,\3/' | sort | uniq -c
+
+Output:
+1031 0,0
+  43 0,1
+  51 1,0
+  24 1,1
+===================================================
+
+Total of different combinations match the total number of INSERT INTO lines.
+
+
+=============== 2025-09-06 19:51:52 ===============
+# Replace 0,0 with false,false in race table
+
+Command:
+sed -i '' 's/\(INSERT INTO race VALUES(\([^,]*,\)\{18\}\)0,0,/\1false,false,/g' f1db_working.sql
+
+Output:
+===================================================
+
+=============== 2025-09-06 19:55:38 ===============
+# Replace 0,1 with false,true in race table
+
+Command:
+sed -i '' 's/\(INSERT INTO race VALUES(\([^,]*,\)\{18\}\)0,1,/\1false,true,/g' f1db_working.sql
+
+Output:
+===================================================
+
+=============== 2025-09-06 19:56:04 ===============
+# Replace 1,0 with true,false in race table
+
+Command:
+sed -i '' 's/\(INSERT INTO race VALUES(\([^,]*,\)\{18\}\)1,0,/\1true,false,/g' f1db_working.sql
+
+Output:
+===================================================
+
+=============== 2025-09-06 19:56:18 ===============
+# Replace 1,1 with true,true in race table
+
+Command:
+sed -i '' 's/\(INSERT INTO race VALUES(\([^,]*,\)\{18\}\)1,1,/\1true,true,/g' f1db_working.sql
+
+Output:
+===================================================
+
+=============== 2025-09-06 20:15:29 ===============
+# Check updated boolean patterns in race table
+
+Command:
+grep 'INSERT INTO race VALUES' f1db_working.sql | sed 's/INSERT INTO race VALUES(\([^,]*,\)\{18\}\([^,]*\),\([^,]*\),.*/\2,\3/' | sort | uniq -c
+
+Output:
+1031 false,false
+  43 false,true
+  51 true,false
+  24 true,true
+===================================================
+
+This matches the numbers perfectly, the 0's have been converted to 'false' and the 1's have been converted to 'true'.
+Now moving on to the next BOOLEAN fields.
+
+=============== 2025-09-07 11:03:56 ===============
+# Find the table and structure to which race_shared_car belongs to
+
+Command:
+grep -B 37 -A 42 '"race_shared_car" BOOLEAN' f1db_working.sql
+
+Output:
+CREATE TABLE IF NOT EXISTS "race_data"
+( "race_id" INTEGER NOT NULL
+, "type" VARCHAR(50) NOT NULL
+, "position_display_order" INTEGER NOT NULL
+, "position_number" INTEGER
+, "position_text" VARCHAR(4) NOT NULL
+, "driver_number" VARCHAR(3) NOT NULL
+, "driver_id" VARCHAR(100) NOT NULL
+, "constructor_id" VARCHAR(100) NOT NULL
+, "engine_manufacturer_id" VARCHAR(100) NOT NULL
+, "tyre_manufacturer_id" VARCHAR(100) NOT NULL
+, "practice_time" VARCHAR(20)
+, "practice_time_millis" INTEGER
+, "practice_gap" VARCHAR(20)
+, "practice_gap_millis" INTEGER
+, "practice_interval" VARCHAR(20)
+, "practice_interval_millis" INTEGER
+, "practice_laps" INTEGER
+, "qualifying_time" VARCHAR(20)
+, "qualifying_time_millis" INTEGER
+, "qualifying_q1" VARCHAR(20)
+, "qualifying_q1_millis" INTEGER
+, "qualifying_q2" VARCHAR(20)
+, "qualifying_q2_millis" INTEGER
+, "qualifying_q3" VARCHAR(20)
+, "qualifying_q3_millis" INTEGER
+, "qualifying_gap" VARCHAR(20)
+, "qualifying_gap_millis" INTEGER
+, "qualifying_interval" VARCHAR(20)
+, "qualifying_interval_millis" INTEGER
+, "qualifying_laps" INTEGER
+, "starting_grid_position_qualification_position_number" INTEGER
+, "starting_grid_position_qualification_position_text" VARCHAR(4)
+, "starting_grid_position_grid_penalty" VARCHAR(20)
+, "starting_grid_position_grid_penalty_positions" INTEGER
+, "starting_grid_position_time" VARCHAR(20)
+, "starting_grid_position_time_millis" INTEGER
+, "race_shared_car" BOOLEAN
+, "race_laps" INTEGER
+, "race_time" VARCHAR(20)
+, "race_time_millis" INTEGER
+, "race_time_penalty" VARCHAR(20)
+, "race_time_penalty_millis" INTEGER
+, "race_gap" VARCHAR(20)
+, "race_gap_millis" INTEGER
+, "race_gap_laps" INTEGER
+, "race_interval" VARCHAR(20)
+, "race_interval_millis" INTEGER
+, "race_reason_retired" VARCHAR(100)
+, "race_points" DECIMAL(8,2)
+, "race_pole_position" BOOLEAN
+, "race_qualification_position_number" INTEGER
+, "race_qualification_position_text" VARCHAR(4)
+, "race_grid_position_number" INTEGER
+, "race_grid_position_text" VARCHAR(2)
+, "race_positions_gained" INTEGER
+, "race_pit_stops" INTEGER
+, "race_fastest_lap" BOOLEAN
+, "race_driver_of_the_day" BOOLEAN
+, "race_grand_slam" BOOLEAN
+, "fastest_lap_lap" INTEGER
+, "fastest_lap_time" VARCHAR(20)
+, "fastest_lap_time_millis" INTEGER
+, "fastest_lap_gap" VARCHAR(20)
+, "fastest_lap_gap_millis" INTEGER
+, "fastest_lap_interval" VARCHAR(20)
+, "fastest_lap_interval_millis" INTEGER
+, "pit_stop_stop" INTEGER
+, "pit_stop_lap" INTEGER
+, "pit_stop_time" VARCHAR(20)
+, "pit_stop_time_millis" INTEGER
+, "driver_of_the_day_percentage" DECIMAL(4,1)
+, CONSTRAINT "rcda_pk" PRIMARY KEY ("race_id", "type", "position_display_order")
+, CONSTRAINT "rcda_race_id_fk" FOREIGN KEY ("race_id") REFERENCES "race" ("id")
+, CONSTRAINT "rcda_driver_id_fk" FOREIGN KEY ("driver_id") REFERENCES "driver" ("id")
+, CONSTRAINT "rcda_constructor_id_fk" FOREIGN KEY ("constructor_id") REFERENCES "constructor" ("id")
+, CONSTRAINT "rcda_engine_manufacturer_id_fk" FOREIGN KEY ("engine_manufacturer_id") REFERENCES "engine_manufacturer" ("id")
+, CONSTRAINT "rcda_tyre_manufacturer_id_fk" FOREIGN KEY ("tyre_manufacturer_id") REFERENCES "tyre_manufacturer" ("id")
+);
+INSERT INTO race_data VALUES(290,'PRE_QUALIFYING_RESULT',1,1,'1','40','gilles-villeneuve','mclaren','ford','goodyear',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1:19.480',79480,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+===================================================
+
+=============== 2025-09-07 13:44:52 ===============
+# Check which position has BOOLEAN values
+
+Command:
+grep "INSERT INTO race_data VALUES" f1db_working.sql | head -1 | tr ',' '\n' | nl
+
+Output:
+     1	INSERT INTO race_data VALUES(290
+     2	'PRE_QUALIFYING_RESULT'
+     3	1
+     4	1
+     5	'1'
+     6	'40'
+     7	'gilles-villeneuve'
+     8	'mclaren'
+     9	'ford'
+    10	'goodyear'
+    11	NULL
+    12	NULL
+    13	NULL
+    14	NULL
+    15	NULL
+    16	NULL
+    17	NULL
+    18	'1:19.480'
+    19	79480
+    20	NULL
+    21	NULL
+    22	NULL
+    23	NULL
+    24	NULL
+    25	NULL
+    26	NULL
+    27	NULL
+    28	NULL
+    29	NULL
+    30	NULL
+    31	NULL
+    32	NULL
+    33	NULL
+    34	NULL
+    35	NULL
+    36	NULL
+    37	NULL
+    38	NULL
+    39	NULL
+    40	NULL
+    41	NULL
+    42	NULL
+    43	NULL
+    44	NULL
+    45	NULL
+    46	NULL
+    47	NULL
+    48	NULL
+    49	NULL
+    50	NULL
+    51	NULL
+    52	NULL
+    53	NULL
+    54	NULL
+    55	NULL
+    56	NULL
+    57	NULL
+    58	NULL
+    59	NULL
+    60	NULL
+    61	NULL
+    62	NULL
+    63	NULL
+    64	NULL
+    65	NULL
+    66	NULL
+    67	NULL
+    68	NULL
+    69	NULL
+    70	NULL
+    71	NULL);
+===================================================
+
+Looks like the BOOLEAN positions contain NULL values too unlike the first test_driver field which was explicitly BOOLEAN NOT NULL.
+
+=============== 2025-09-07 13:52:16 ===============
+# Check if the positions are actually corresponding to BOOLEAN values
+
+Command:
+grep -A 70 'CREATE TABLE.*race_data' f1db_working.sql | nl | grep -E '(race_shared_car|race_pole_position|race_fastest_lap|race_driver_of_the_day|race_grand_slam)' | awk '{print "Position " $1-1 ": " $3 " " $4}'
+
+Output:
+Position 37: "race_shared_car" BOOLEAN
+Position 50: "race_pole_position" BOOLEAN
+Position 57: "race_fastest_lap" BOOLEAN
+Position 58: "race_driver_of_the_day" BOOLEAN
+Position 59: "race_grand_slam" BOOLEAN
+===================================================
+
+=============== 2025-09-07 13:56:41 ===============
+# Check if these position of BOOLEANS actually contain NULL values
+
+Command:
+grep "INSERT INTO race_data VALUES" f1db_working.sql | head -1 | tr ',' '\n' | nl | sed -n '37p'
+grep "INSERT INTO race_data VALUES" f1db_working.sql | head -1 | tr ',' '\n' | nl | sed -n '50p'
+grep "INSERT INTO race_data VALUES" f1db_working.sql | head -1 | tr ',' '\n' | nl | sed -n '57,59p'
+
+Output:
+    37	NULL
+    50	NULL
+    57	NULL
+    58	NULL
+    59	NULL
+===================================================
+
+Confirmed that the BOOLEAN fields are in the positions 37, 50, 57, 58, 59.
+This table race_data is much more complicated than the race table.
+race had the 2 BOOLEANS at the very end but rade_data has 5 BOOLEAN values in the the middle positions making for harder pattern matching.
+So I resolved this one by one starting with position 37-race_shared_car.
+
+
+=============== 2025-09-07 15:39:53 ===============
+# Get total number of INSERT statemts to verify each change.
+
+Command:
+grep -c "INSERT INTO race_data" f1db_working.sql
+
+Output:
+182952
+===================================================
+
+Now this number can be matched to all combinations of 0,1,NULL values in the BOOLEAN fields to verify the changes have worked properly.
+
+
+=============== 2025-09-07 15:45:19 ===============
+# Check the combination of position-37-race_shared_car
+
+Command:
+grep "INSERT INTO race_data VALUES" f1db_working.sql | sed 's/INSERT INTO race_data VALUES(\([^,]*,\)\{36\}\([^,]*\),.*/\2/' | sort | uniq -c
+
+Output:
+27384 0
+ 127 1
+155441 NULL
+===================================================
+
+=============== 2025-09-07 15:48:52 ===============
+# Fix 0's at position 37 to false
+
+Command:
+sed -i '' 's/\(INSERT INTO race_data VALUES(\([^,]*,\)\{36\}\)0,/\1false,/g' f1db_working.sql
+
+Output:
+===================================================
+
+=============== 2025-09-07 15:50:02 ===============
+# Fix 1's at position 37 to true
+
+Command:
+sed -i '' 's/\(INSERT INTO race_data VALUES(\([^,]*,\)\{36\}\)1,/\1true,/g' f1db_working.sql
+
+Output:
+===================================================
+
+=============== 2025-09-07 15:50:50 ===============
+# Check the combination of position-37-race_shared_car after the change
+
+Command:
+grep "INSERT INTO race_data VALUES" f1db_working.sql | sed 's/INSERT INTO race_data VALUES(\([^,]*,\)\{36\}\([^,]*\),.*/\2/' | sort | uniq -c
+
+Output:
+27384 false
+155441 NULL
+ 127 true
+===================================================
+
+Perfect, now applying the same changes to the remaining fields and verifying the numbers.
+
+
+=============== 2025-09-07 15:59:00 ===============
+# Check the combination of position-50-race_pole_position
+
+Command:
+grep "INSERT INTO race_data VALUES" f1db_working.sql | sed 's/INSERT INTO race_data VALUES(\([^,]*,\)\{49\}\([^,]*\),.*/\2/' | sort | uniq -c
+
+Output:
+26372 0
+1139 1
+155441 NULL
+===================================================
+
+
+=============== 2025-09-07 16:13:09 ===============
+# Fix position 50 0's
+
+Command:
+sed -i '' 's/\(INSERT INTO race_data VALUES(\([^,]*,\)\{49\}\)0,/\1false,/g' f1db_working.sql
+
+Output:
+===================================================
+
+=============== 2025-09-07 16:13:45 ===============
+# Fix position 50 1's
+
+Command:
+sed -i '' 's/\(INSERT INTO race_data VALUES(\([^,]*,\)\{49\}\)1,/\1true,/g' f1db_working.sql
+
+Output:
+===================================================
+
+=============== 2025-09-07 16:15:01 ===============
+# Check the combination of position-50-race_pole_position again
+
+Command:
+grep "INSERT INTO race_data VALUES" f1db_working.sql | sed 's/INSERT INTO race_data VALUES(\([^,]*,\)\{49\}\([^,]*\),.*/\2/' | sort | uniq -c
+
+Output:
+26372 false
+155441 NULL
+1139 true
+===================================================
+
+=============== 2025-09-07 16:17:06 ===============
+# Check the combination of position-57-race_fastest_lap
+
+Command:
+grep "INSERT INTO race_data VALUES" f1db_working.sql | sed 's/INSERT INTO race_data VALUES(\([^,]*,\)\{56\}\([^,]*\),.*/\2/' | sort | uniq -c
+
+Output:
+26336 0
+1155 1
+155461 NULL
+===================================================
+
+=============== 2025-09-07 16:18:40 ===============
+# Fix position 57 0's
+
+Command:
+sed -i '' 's/\(INSERT INTO race_data VALUES(\([^,]*,\)\{56\}\)0,/\1false,/g' f1db_working.sql
+
+Output:
+===================================================
+
+=============== 2025-09-07 16:19:29 ===============
+# Fix position 57 1's
+
+Command:
+sed -i '' 's/\(INSERT INTO race_data VALUES(\([^,]*,\)\{56\}\)1,/\1true,/g' f1db_working.sql
+
+Output:
+===================================================
+
+=============== 2025-09-07 16:21:24 ===============
+# Check the combination of position-57-race_fastest_lap again
+
+Command:
+grep "INSERT INTO race_data VALUES" f1db_working.sql | sed 's/INSERT INTO race_data VALUES(\([^,]*,\)\{56\}\([^,]*\),.*/\2/' | sort | uniq -c
+
+Output:
+26336 false
+155461 NULL
+1155 true
+===================================================
+
+=============== 2025-09-07 16:33:17 ===============
+# Check the combination of position-58-race_driver_of_the_day
+
+Command:
+grep "INSERT INTO race_data VALUES" f1db_working.sql | sed 's/INSERT INTO race_data VALUES(\([^,]*,\)\{57\}\([^,]*\),.*/\2/' | sort | uniq -c
+
+Output:
+4318 0
+ 203 1
+178431 NULL
+===================================================
+
+=============== 2025-09-07 16:34:32 ===============
+# Fix position 58 0's
+
+Command:
+sed -i '' 's/\(INSERT INTO race_data VALUES(\([^,]*,\)\{57\}\)0,/\1false,/g' f1db_working.sql
+
+Output:
+===================================================
+
+=============== 2025-09-07 16:35:57 ===============
+# Fix position 58 1's
+
+Command:
+sed -i '' 's/\(INSERT INTO race_data VALUES(\([^,]*,\)\{57\}\)1,/\1true,/g' f1db_working.sql
+
+Output:
+===================================================
+
+=============== 2025-09-07 16:36:45 ===============
+# Check the combination of position-58-race_driver_of_the_day again
+
+Command:
+grep "INSERT INTO race_data VALUES" f1db_working.sql | sed 's/INSERT INTO race_data VALUES(\([^,]*,\)\{57\}\([^,]*\),.*/\2/' | sort | uniq -c
+
+Output:
+4318 false
+178431 NULL
+ 203 true
+===================================================
+
+=============== 2025-09-07 16:38:40 ===============
+# Check the combination of position-59-race_grand_slam
+
+Command:
+grep "INSERT INTO race_data VALUES" f1db_working.sql | sed 's/INSERT INTO race_data VALUES(\([^,]*,\)\{58\}\([^,]*\),.*/\2/' | sort | uniq -c
+
+Output:
+27462 0
+  49 1
+155441 NULL
+===================================================
+
+=============== 2025-09-07 16:39:10 ===============
+# Fix position 59 0's
+
+Command:
+sed -i '' 's/\(INSERT INTO race_data VALUES(\([^,]*,\)\{58\}\)0,/\1false,/g' f1db_working.sql
+
+Output:
+===================================================
+
+=============== 2025-09-07 16:39:38 ===============
+# Fix position 59 1's
+
+Command:
+sed -i '' 's/\(INSERT INTO race_data VALUES(\([^,]*,\)\{58\}\)1,/\1true,/g' f1db_working.sql
+
+Output:
+===================================================
+
+=============== 2025-09-07 16:39:58 ===============
+# Check the combination of position-59-race_grand_slam again
+
+Command:
+grep "INSERT INTO race_data VALUES" f1db_working.sql | sed 's/INSERT INTO race_data VALUES(\([^,]*,\)\{58\}\([^,]*\),.*/\2/' | sort | uniq -c
+
+Output:
+27462 false
+155441 NULL
+  49 true
+===================================================
+
+All numbers correspond correctly to the total number of INSERT statements.
+All BOOLEAN inaccuracies have been resolved.
+
+===================================================
+The last few lines after running "time psql -U rak -d migration_dump -f /Users/rakshith/Code/F1_Project/scripts/manual_dump/f1db_working.sql"
+show this:
+
+.
+.
+.
+.
+.
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+COMMIT
+psql -U rak -d migration_dump -f f1db_working.sql  1.00s user 1.03s system 14% cpu 14.003 total
+
+===================================================
+
+MIGRATION COMPLETE.
+

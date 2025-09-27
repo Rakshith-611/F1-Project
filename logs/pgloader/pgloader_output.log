@@ -1,0 +1,54 @@
+2025-08-12T13:53:06.004231-04:00 LOG pgloader version "3.6.9"
+2025-08-12T13:53:06.035665-04:00 LOG Migrating from #<SQLITE-CONNECTION sqlite:///Users/rakshith/Code/F1_Project/data/sqlite/f1db.db {700B110AF3}>
+2025-08-12T13:53:06.035736-04:00 LOG Migrating into #<PGSQL-CONNECTION pgsql://rak@localhost:5432/migration_pgloader {700B244B73}>
+2025-08-12T13:53:08.012119-04:00 LOG report summary reset
+                      table name     errors       rows      bytes      total time
+--------------------------------  ---------  ---------  ---------  --------------
+                           fetch          0          0                     0.000s
+                 fetch meta data          0        261                     0.022s
+                  Create Schemas          0          0                     0.001s
+                Create SQL Types          0          0                     0.002s
+                   Create tables          0         60                     0.061s
+                  Set Table OIDs          0         30                     0.002s
+--------------------------------  ---------  ---------  ---------  --------------
+                       continent          0          7     0.2 kB          0.029s
+                         country          0        249    12.6 kB          0.029s
+                          driver          0        912   147.5 kB          0.070s
+      driver_family_relationship          0         86     3.7 kB          0.047s
+          constructor_chronology          0        207     6.1 kB          0.069s
+             engine_manufacturer          0         76     4.7 kB          0.081s
+               tyre_manufacturer          0          9     0.6 kB          0.082s
+                         circuit          0         77     9.0 kB          0.094s
+                          season          0         76     0.4 kB          0.094s
+      season_entrant_constructor          0       1914    74.3 kB          0.110s
+                     constructor          0        185    14.8 kB          0.082s
+                         chassis          0       1138    43.2 kB          0.097s
+           season_entrant_engine          0       2016   117.9 kB          0.112s
+                          engine          0        419    33.2 kB          0.111s
+                         entrant          0        823    30.3 kB          0.125s
+           season_entrant_driver          0       3840   292.1 kB          0.124s
+                      grand_prix          0         53     3.5 kB          0.140s
+                  season_entrant          0       1788    66.3 kB          0.158s
+          season_entrant_chassis          0       2281   118.1 kB          0.178s
+season_entrant_tyre_manufacturer          0       1944    92.1 kB          0.188s
+      season_engine_manufacturer          0        555    24.5 kB          0.118s
+              season_constructor          0       1068    49.1 kB          0.197s
+                   season_driver          0       3379   174.1 kB          0.138s
+        season_tyre_manufacturer          0        159     6.3 kB          0.201s
+          season_driver_standing          0       1658    48.9 kB          0.210s
+                            race          0       1149   232.9 kB          0.225s
+     season_constructor_standing          0        710    20.3 kB          0.124s
+                       race_data          0     182952    46.9 MB          1.414s
+            race_driver_standing          0      20998   643.9 kB          0.251s
+       race_constructor_standing          0      10389   311.9 kB          0.030s
+--------------------------------  ---------  ---------  ---------  --------------
+         COPY Threads Completion          0          4                     1.445s
+                  Create Indexes          0        163                     1.798s
+          Index Build Completion          0        163                     0.230s
+                 Reset Sequences          0          0                     0.014s
+                    Primary Keys          0         30                     0.028s
+             Create Foreign Keys          0         68                     0.117s
+                 Create Triggers          0          0                     0.000s
+                Install Comments          0          0                     0.000s
+--------------------------------  ---------  ---------  ---------  --------------
+               Total import time          ✓     241117    49.4 MB          3.632s
