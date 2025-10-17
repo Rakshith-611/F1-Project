@@ -1,0 +1,1 @@
+psql -U username -d database -f /path/to/your/file.sql
