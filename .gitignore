@@ -1,0 +1,4 @@
+.env
+.DS_Store
+save_log_function.sh
+.db
