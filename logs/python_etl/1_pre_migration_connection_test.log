@@ -1,0 +1,85 @@
+=============== 2025-10-19 17:11:48 ===============
+# Check the connection to both the sqlite and postgres databases through python
+
+Command:
+python test_connections.py
+
+Output:
+
+==================================================
+
+     F1 Database Migration - Connection Test      
+
+==================================================
+
+==================================================
+Testing SQLite Connection...
+==================================================
+
+Successfully connected to SQLite database
+
+Found 47 tables across all schemas in SQLite database:
+ - chassis: 1,138 rows
+ - circuit: 77 rows
+ - constructor: 185 rows
+ - constructor_chronology: 207 rows
+ - continent: 7 rows
+ - country: 249 rows
+ - driver: 912 rows
+ - driver_family_relationship: 86 rows
+ - driver_of_the_day_result: 767 rows
+ - engine: 419 rows
+ - engine_manufacturer: 76 rows
+ - entrant: 823 rows
+ - fastest_lap: 16,658 rows
+ - free_practice_1_result: 15,636 rows
+ - free_practice_2_result: 15,216 rows
+ - free_practice_3_result: 8,530 rows
+ - free_practice_4_result: 706 rows
+ - grand_prix: 53 rows
+ - pit_stop: 21,787 rows
+ - pre_qualifying_result: 647 rows
+ - qualifying_1_result: 7,707 rows
+ - qualifying_2_result: 7,541 rows
+ - qualifying_result: 26,516 rows
+ - race: 1,149 rows
+ - race_constructor_standing: 10,389 rows
+ - race_data: 182,952 rows
+ - race_driver_standing: 20,998 rows
+ - race_result: 27,091 rows
+ - season: 76 rows
+ - season_constructor: 1,068 rows
+ - season_constructor_standing: 710 rows
+ - season_driver: 3,379 rows
+ - season_driver_standing: 1,658 rows
+ - season_engine_manufacturer: 555 rows
+ - season_entrant: 1,788 rows
+ - season_entrant_chassis: 2,281 rows
+ - season_entrant_constructor: 1,914 rows
+ - season_entrant_driver: 3,840 rows
+ - season_entrant_engine: 2,016 rows
+ - season_entrant_tyre_manufacturer: 1,944 rows
+ - season_tyre_manufacturer: 159 rows
+ - sprint_qualifying_result: 300 rows
+ - sprint_race_result: 420 rows
+ - sprint_starting_grid_position: 419 rows
+ - starting_grid_position: 25,328 rows
+ - tyre_manufacturer: 9 rows
+ - warming_up_result: 7,683 rows
+
+==================================================
+Testing PostgreSQL Connection...
+==================================================
+
+Successfully connected to PostgreSQL database 'migration_python' on host 'localhost'
+
+Found 0 tables in PostgreSQL database:
+Warning: No tables found in the PostgreSQL database.
+
+==================================================
+             Connection Test Summary              
+==================================================
+
+All connections successful!
+===================================================
+
