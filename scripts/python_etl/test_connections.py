@@ -50,30 +50,20 @@ def test_sqlite_connection():
         cursor.execute("PRAGMA database_list;")
         schemas = [row[1] for row in cursor.fetchall()]  # ['main', 'temp', ...]
 
-        all_tables = []
+        # Get list of tables
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        tables = cursor.fetchall()
 
-        # Loop through each schema and collect tables
-        for schema in schemas:
-            cursor.execute(f"""
-            SELECT name, type
-            FROM {schema}.sqlite_master
-            WHERE type IN ('table', 'view')
-            ORDER BY name;
-            """)
-            tables = [row[0] for row in cursor.fetchall()]
-
-            for table_name in tables:
-                cursor.execute(f'SELECT COUNT(*) FROM "{schema}"."{table_name}"')
-                count = cursor.fetchone()[0]
-                all_tables.append((f"{table_name}", count))
-
-        print(f'\nFound {len(all_tables)} tables across all schemas in SQLite database:')
-        for table_name, count in all_tables:
-            print(f" - {table_name}: {count:,} rows")
-
-        if len(all_tables) == 0:
+        print(f"\nFound {len(tables)} tables:")
+        for table in tables:
+            table_name = table[0]
+            cursor.execute(f"SELECT COUNT(*) FROM {table_name}")
+            count = cursor.fetchone()[0]
+            print(f"  - {table_name}: {count:,} rows")
+    
+        if len(tables) == 0:
             print("Warning: No tables found in the SQLite database.")
-
+        
         conn.close()
         return True
 
