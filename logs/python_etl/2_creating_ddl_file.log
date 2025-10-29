@@ -1,0 +1,217 @@
+=============== 2025-10-29 17:16:00 ===============
+# Create the DDL (.sql) file with CREATE TABLE commands
+
+Command:
+python analyze_schema.py
+
+Output:
+
+============================================================
+            SQLite to PostgreSQL Schema Analyzer            
+============================================================
+
+Analyzing SQLite schema...
+
+Connected to SQLite database at /Users/rakshith/Code/F1_Project/data/sqlite/f1db.db
+
+============================================================
+                   Schema Analysis Report                   
+============================================================
+
+Table: chassis
+  Columns: 4
+  Foreign Keys: 1
+  Indexes: 4
+  Rows: 1138
+
+Table: circuit
+  Columns: 13
+  Foreign Keys: 1
+  Indexes: 7
+  Rows: 77
+
+Table: constructor
+  Columns: 19
+  Foreign Keys: 1
+  Indexes: 4
+  Rows: 185
+
+Table: constructor_chronology
+  Columns: 5
+  Foreign Keys: 2
+  Indexes: 5
+  Rows: 207
+
+Table: continent
+  Columns: 4
+  Foreign Keys: 0
+  Indexes: 3
+  Rows: 7
+
+Table: country
+  Columns: 7
+  Foreign Keys: 1
+  Indexes: 5
+  Rows: 249
+
+Table: driver
+  Columns: 29
+  Foreign Keys: 3
+  Indexes: 14
+  Rows: 912
+
+Table: driver_family_relationship
+  Columns: 4
+  Foreign Keys: 2
+  Indexes: 5
+  Rows: 86
+
+Table: engine
+  Columns: 7
+  Foreign Keys: 1
+  Indexes: 7
+  Rows: 419
+
+Table: engine_manufacturer
+  Columns: 17
+  Foreign Keys: 1
+  Indexes: 3
+  Rows: 76
+
+Table: entrant
+  Columns: 2
+  Foreign Keys: 0
+  Indexes: 2
+  Rows: 823
+
+Table: grand_prix
+  Columns: 7
+  Foreign Keys: 1
+  Indexes: 6
+  Rows: 53
+
+Table: race
+  Columns: 42
+  Foreign Keys: 3
+  Indexes: 11
+  Rows: 1149
+
+Table: race_constructor_standing
+  Columns: 8
+  Foreign Keys: 3
+  Indexes: 7
+  Rows: 10389
+
+Table: race_data
+  Columns: 71
+  Foreign Keys: 5
+  Indexes: 11
+  Rows: 182952
+
+Table: race_driver_standing
+  Columns: 7
+  Foreign Keys: 2
+  Indexes: 6
+  Rows: 20998
+
+Table: season
+  Columns: 1
+  Foreign Keys: 0
+  Indexes: 0
+  Rows: 76
+
+Table: season_constructor
+  Columns: 16
+  Foreign Keys: 2
+  Indexes: 3
+  Rows: 1068
+
+Table: season_constructor_standing
+  Columns: 7
+  Foreign Keys: 3
+  Indexes: 7
+  Rows: 710
+
+Table: season_driver
+  Columns: 16
+  Foreign Keys: 2
+  Indexes: 3
+  Rows: 3379
+
+Table: season_driver_standing
+  Columns: 6
+  Foreign Keys: 2
+  Indexes: 6
+  Rows: 1658
+
+Table: season_engine_manufacturer
+  Columns: 15
+  Foreign Keys: 2
+  Indexes: 3
+  Rows: 555
+
+Table: season_entrant
+  Columns: 3
+  Foreign Keys: 3
+  Indexes: 4
+  Rows: 1788
+
+Table: season_entrant_chassis
+  Columns: 5
+  Foreign Keys: 5
+  Indexes: 6
+  Rows: 2281
+
+Table: season_entrant_constructor
+  Columns: 4
+  Foreign Keys: 4
+  Indexes: 5
+  Rows: 1914
+
+Table: season_entrant_driver
+  Columns: 8
+  Foreign Keys: 5
+  Indexes: 6
+  Rows: 3840
+
+Table: season_entrant_engine
+  Columns: 5
+  Foreign Keys: 5
+  Indexes: 6
+  Rows: 2016
+
+Table: season_entrant_tyre_manufacturer
+  Columns: 5
+  Foreign Keys: 5
+  Indexes: 6
+  Rows: 1944
+
+Table: season_tyre_manufacturer
+  Columns: 12
+  Foreign Keys: 2
+  Indexes: 3
+  Rows: 159
+
+Table: tyre_manufacturer
+  Columns: 13
+  Foreign Keys: 1
+  Indexes: 3
+  Rows: 9
+
+
+============================================================
+
+SQLite connection closed
+Generating PostgreSQL DDL script...
+
+Connected to SQLite database at /Users/rakshith/Code/F1_Project/data/sqlite/f1db.db
+SQLite connection closed
+
+============================================================
+PostgreSQL DDL script generated at postgresql_ddl.sql
+Total Tables Processed: 30
+============================================================
+
+DDL generation completed successfully.
+===================================================
+
