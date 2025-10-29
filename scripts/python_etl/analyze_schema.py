@@ -188,7 +188,7 @@ class SchemaAnalyzer:
         columns = self.get_table_info(table_name)
         fkeys = self.get_foreign_keys(table_name)
         
-        ddl = f"CERATE TABLE IF NOT EXISTS {table_name} (\n"
+        ddl = f"CREATE TABLE IF NOT EXISTS {table_name} (\n"
 
         # Column definitions
         col_defs = []

@@ -10,7 +10,7 @@
 -- TABLE DEFINITIONS
 ============================================================
 -- Table: chassis
-CERATE TABLE IF NOT EXISTS chassis (
+CREATE TABLE IF NOT EXISTS chassis (
     "id" VARCHAR(100) PRIMARY KEY,
     "constructor_id" VARCHAR(100) NOT NULL,
     "name" VARCHAR(100) NOT NULL,
@@ -19,7 +19,7 @@ CERATE TABLE IF NOT EXISTS chassis (
 );
 
 -- Table: circuit
-CERATE TABLE IF NOT EXISTS circuit (
+CREATE TABLE IF NOT EXISTS circuit (
     "id" VARCHAR(100) PRIMARY KEY,
     "name" VARCHAR(100) NOT NULL,
     "full_name" VARCHAR(100) NOT NULL,
@@ -37,7 +37,7 @@ CERATE TABLE IF NOT EXISTS circuit (
 );
 
 -- Table: constructor
-CERATE TABLE IF NOT EXISTS constructor (
+CREATE TABLE IF NOT EXISTS constructor (
     "id" VARCHAR(100) PRIMARY KEY,
     "name" VARCHAR(100) NOT NULL,
     "full_name" VARCHAR(100) NOT NULL,
@@ -61,7 +61,7 @@ CERATE TABLE IF NOT EXISTS constructor (
 );
 
 -- Table: constructor_chronology
-CERATE TABLE IF NOT EXISTS constructor_chronology (
+CREATE TABLE IF NOT EXISTS constructor_chronology (
     "constructor_id" VARCHAR(100),
     "position_display_order" INTEGER,
     "other_constructor_id" VARCHAR(100) NOT NULL,
@@ -73,7 +73,7 @@ CERATE TABLE IF NOT EXISTS constructor_chronology (
 );
 
 -- Table: continent
-CERATE TABLE IF NOT EXISTS continent (
+CREATE TABLE IF NOT EXISTS continent (
     "id" VARCHAR(100) PRIMARY KEY,
     "code" VARCHAR(2) NOT NULL,
     "name" VARCHAR(100) NOT NULL,
@@ -81,7 +81,7 @@ CERATE TABLE IF NOT EXISTS continent (
 );
 
 -- Table: country
-CERATE TABLE IF NOT EXISTS country (
+CREATE TABLE IF NOT EXISTS country (
     "id" VARCHAR(100) PRIMARY KEY,
     "alpha2_code" VARCHAR(2) NOT NULL,
     "alpha3_code" VARCHAR(3) NOT NULL,
@@ -93,7 +93,7 @@ CERATE TABLE IF NOT EXISTS country (
 );
 
 -- Table: driver
-CERATE TABLE IF NOT EXISTS driver (
+CREATE TABLE IF NOT EXISTS driver (
     "id" VARCHAR(100) PRIMARY KEY,
     "name" VARCHAR(100) NOT NULL,
     "first_name" VARCHAR(100) NOT NULL,
@@ -129,7 +129,7 @@ CERATE TABLE IF NOT EXISTS driver (
 );
 
 -- Table: driver_family_relationship
-CERATE TABLE IF NOT EXISTS driver_family_relationship (
+CREATE TABLE IF NOT EXISTS driver_family_relationship (
     "driver_id" VARCHAR(100),
     "position_display_order" INTEGER,
     "other_driver_id" VARCHAR(100) NOT NULL,
@@ -140,7 +140,7 @@ CERATE TABLE IF NOT EXISTS driver_family_relationship (
 );
 
 -- Table: engine
-CERATE TABLE IF NOT EXISTS engine (
+CREATE TABLE IF NOT EXISTS engine (
     "id" VARCHAR(100) PRIMARY KEY,
     "engine_manufacturer_id" VARCHAR(100) NOT NULL,
     "name" VARCHAR(100) NOT NULL,
@@ -152,7 +152,7 @@ CERATE TABLE IF NOT EXISTS engine (
 );
 
 -- Table: engine_manufacturer
-CERATE TABLE IF NOT EXISTS engine_manufacturer (
+CREATE TABLE IF NOT EXISTS engine_manufacturer (
     "id" VARCHAR(100) PRIMARY KEY,
     "name" VARCHAR(100) NOT NULL,
     "country_id" VARCHAR(100) NOT NULL,
@@ -174,13 +174,13 @@ CERATE TABLE IF NOT EXISTS engine_manufacturer (
 );
 
 -- Table: entrant
-CERATE TABLE IF NOT EXISTS entrant (
+CREATE TABLE IF NOT EXISTS entrant (
     "id" VARCHAR(100) PRIMARY KEY,
     "name" VARCHAR(100) NOT NULL
 );
 
 -- Table: grand_prix
-CERATE TABLE IF NOT EXISTS grand_prix (
+CREATE TABLE IF NOT EXISTS grand_prix (
     "id" VARCHAR(100) PRIMARY KEY,
     "name" VARCHAR(100) NOT NULL,
     "full_name" VARCHAR(100) NOT NULL,
@@ -192,7 +192,7 @@ CERATE TABLE IF NOT EXISTS grand_prix (
 );
 
 -- Table: race
-CERATE TABLE IF NOT EXISTS race (
+CREATE TABLE IF NOT EXISTS race (
     "id" INTEGER PRIMARY KEY,
     "year" INTEGER NOT NULL,
     "round" INTEGER NOT NULL,
@@ -241,7 +241,7 @@ CERATE TABLE IF NOT EXISTS race (
 );
 
 -- Table: race_constructor_standing
-CERATE TABLE IF NOT EXISTS race_constructor_standing (
+CREATE TABLE IF NOT EXISTS race_constructor_standing (
     "race_id" INTEGER,
     "position_display_order" INTEGER,
     "position_number" INTEGER,
@@ -257,7 +257,7 @@ CERATE TABLE IF NOT EXISTS race_constructor_standing (
 );
 
 -- Table: race_data
-CERATE TABLE IF NOT EXISTS race_data (
+CREATE TABLE IF NOT EXISTS race_data (
     "race_id" INTEGER,
     "type" VARCHAR(50),
     "position_display_order" INTEGER,
@@ -338,7 +338,7 @@ CERATE TABLE IF NOT EXISTS race_data (
 );
 
 -- Table: race_driver_standing
-CERATE TABLE IF NOT EXISTS race_driver_standing (
+CREATE TABLE IF NOT EXISTS race_driver_standing (
     "race_id" INTEGER,
     "position_display_order" INTEGER,
     "position_number" INTEGER,
@@ -352,12 +352,12 @@ CERATE TABLE IF NOT EXISTS race_driver_standing (
 );
 
 -- Table: season
-CERATE TABLE IF NOT EXISTS season (
+CREATE TABLE IF NOT EXISTS season (
     "year" INTEGER PRIMARY KEY
 );
 
 -- Table: season_constructor
-CERATE TABLE IF NOT EXISTS season_constructor (
+CREATE TABLE IF NOT EXISTS season_constructor (
     "year" INTEGER,
     "constructor_id" VARCHAR(100),
     "position_number" INTEGER,
@@ -380,7 +380,7 @@ CERATE TABLE IF NOT EXISTS season_constructor (
 );
 
 -- Table: season_constructor_standing
-CERATE TABLE IF NOT EXISTS season_constructor_standing (
+CREATE TABLE IF NOT EXISTS season_constructor_standing (
     "year" INTEGER,
     "position_display_order" INTEGER,
     "position_number" INTEGER,
@@ -395,7 +395,7 @@ CERATE TABLE IF NOT EXISTS season_constructor_standing (
 );
 
 -- Table: season_driver
-CERATE TABLE IF NOT EXISTS season_driver (
+CREATE TABLE IF NOT EXISTS season_driver (
     "year" INTEGER,
     "driver_id" VARCHAR(100),
     "position_number" INTEGER,
@@ -418,7 +418,7 @@ CERATE TABLE IF NOT EXISTS season_driver (
 );
 
 -- Table: season_driver_standing
-CERATE TABLE IF NOT EXISTS season_driver_standing (
+CREATE TABLE IF NOT EXISTS season_driver_standing (
     "year" INTEGER,
     "position_display_order" INTEGER,
     "position_number" INTEGER,
@@ -431,7 +431,7 @@ CERATE TABLE IF NOT EXISTS season_driver_standing (
 );
 
 -- Table: season_engine_manufacturer
-CERATE TABLE IF NOT EXISTS season_engine_manufacturer (
+CREATE TABLE IF NOT EXISTS season_engine_manufacturer (
     "year" INTEGER,
     "engine_manufacturer_id" VARCHAR(100),
     "position_number" INTEGER,
@@ -453,7 +453,7 @@ CERATE TABLE IF NOT EXISTS season_engine_manufacturer (
 );
 
 -- Table: season_entrant
-CERATE TABLE IF NOT EXISTS season_entrant (
+CREATE TABLE IF NOT EXISTS season_entrant (
     "year" INTEGER,
     "entrant_id" VARCHAR(100),
     "country_id" VARCHAR(100) NOT NULL,
@@ -464,7 +464,7 @@ CERATE TABLE IF NOT EXISTS season_entrant (
 );
 
 -- Table: season_entrant_chassis
-CERATE TABLE IF NOT EXISTS season_entrant_chassis (
+CREATE TABLE IF NOT EXISTS season_entrant_chassis (
     "year" INTEGER,
     "entrant_id" VARCHAR(100),
     "constructor_id" VARCHAR(100),
@@ -479,7 +479,7 @@ CERATE TABLE IF NOT EXISTS season_entrant_chassis (
 );
 
 -- Table: season_entrant_constructor
-CERATE TABLE IF NOT EXISTS season_entrant_constructor (
+CREATE TABLE IF NOT EXISTS season_entrant_constructor (
     "year" INTEGER,
     "entrant_id" VARCHAR(100),
     "constructor_id" VARCHAR(100),
@@ -492,7 +492,7 @@ CERATE TABLE IF NOT EXISTS season_entrant_constructor (
 );
 
 -- Table: season_entrant_driver
-CERATE TABLE IF NOT EXISTS season_entrant_driver (
+CREATE TABLE IF NOT EXISTS season_entrant_driver (
     "year" INTEGER,
     "entrant_id" VARCHAR(100),
     "constructor_id" VARCHAR(100),
@@ -510,7 +510,7 @@ CERATE TABLE IF NOT EXISTS season_entrant_driver (
 );
 
 -- Table: season_entrant_engine
-CERATE TABLE IF NOT EXISTS season_entrant_engine (
+CREATE TABLE IF NOT EXISTS season_entrant_engine (
     "year" INTEGER,
     "entrant_id" VARCHAR(100),
     "constructor_id" VARCHAR(100),
@@ -525,7 +525,7 @@ CERATE TABLE IF NOT EXISTS season_entrant_engine (
 );
 
 -- Table: season_entrant_tyre_manufacturer
-CERATE TABLE IF NOT EXISTS season_entrant_tyre_manufacturer (
+CREATE TABLE IF NOT EXISTS season_entrant_tyre_manufacturer (
     "year" INTEGER,
     "entrant_id" VARCHAR(100),
     "constructor_id" VARCHAR(100),
@@ -540,7 +540,7 @@ CERATE TABLE IF NOT EXISTS season_entrant_tyre_manufacturer (
 );
 
 -- Table: season_tyre_manufacturer
-CERATE TABLE IF NOT EXISTS season_tyre_manufacturer (
+CREATE TABLE IF NOT EXISTS season_tyre_manufacturer (
     "year" INTEGER,
     "tyre_manufacturer_id" VARCHAR(100),
     "best_starting_grid_position" INTEGER,
@@ -559,7 +559,7 @@ CERATE TABLE IF NOT EXISTS season_tyre_manufacturer (
 );
 
 -- Table: tyre_manufacturer
-CERATE TABLE IF NOT EXISTS tyre_manufacturer (
+CREATE TABLE IF NOT EXISTS tyre_manufacturer (
     "id" VARCHAR(100) PRIMARY KEY,
     "name" VARCHAR(100) NOT NULL,
     "country_id" VARCHAR(100) NOT NULL,
